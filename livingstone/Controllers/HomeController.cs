@@ -34,7 +34,7 @@ namespace livingstone.Controllers
             ViewBag.followers = db.Followings.Where(x => x.FollowingID == Us.Id).Count();
             ViewBag.Photo = Us.ProfilePhotoes.FirstOrDefault();
             ViewBag.Cover = Us.CoverPhotoes.FirstOrDefault();
-            if(id > 0)
+            if(db.Users.Any(x=>x.Id==id))
             {
                 ViewBag.Users = GetUsers.GetNotFollowin(id);
                 ViewBag.followers = db.Followings.Where(x => x.FollowingID == id).Count();
