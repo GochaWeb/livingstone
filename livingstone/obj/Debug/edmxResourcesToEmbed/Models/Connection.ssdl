@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LivingstoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentId" />
+    </Key>
+    <Property Name="CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CommentText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CommentDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CoverPhoto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Photo" Type="varchar" MaxLength="36" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProfilePhoto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Photo" Type="varchar" MaxLength="36" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reply">
+    <Key>
+      <PropertyRef Name="ReplyId" />
+    </Key>
+    <Property Name="ReplyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CommentID" Type="int" Nullable="false" />
+    <Property Name="ReplyText" Type="nvarchar(max)" />
+    <Property Name="ReplyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="Confirmation" Type="varchar" MaxLength="32" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="RegNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Search" Type="nvarchar" MaxLength="360" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Comment_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CoverPhoto_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="CoverPhoto" Type="Self.CoverPhoto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CoverPhoto">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProfilePhoto_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="ProfilePhoto" Type="Self.ProfilePhoto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProfilePhoto">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reply_Comment">
+    <End Role="Comment" Type="Self.Comment" Multiplicity="1" />
+    <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comment">
+        <PropertyRef Name="CommentId" />
+      </Principal>
+      <Dependent Role="Reply">
+        <PropertyRef Name="CommentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Reply_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reply">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LivingstoneModelStoreContainer">
+    <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CoverPhoto" EntityType="Self.CoverPhoto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProfilePhoto" EntityType="Self.ProfilePhoto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reply" EntityType="Self.Reply" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Comment_Users" Association="Self.FK_Comment_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CoverPhoto_Users" Association="Self.FK_CoverPhoto_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CoverPhoto" EntitySet="CoverPhoto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProfilePhoto_Users" Association="Self.FK_ProfilePhoto_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ProfilePhoto" EntitySet="ProfilePhoto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reply_Comment" Association="Self.FK_Reply_Comment">
+      <End Role="Comment" EntitySet="Comment" />
+      <End Role="Reply" EntitySet="Reply" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Reply_Users" Association="Self.FK_Reply_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Reply" EntitySet="Reply" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

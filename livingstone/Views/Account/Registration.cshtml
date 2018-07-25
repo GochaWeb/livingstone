@@ -1,0 +1,47 @@
+﻿@model livingstone.Models.UserValidation
+@{
+    ViewBag.Title = "Registration";
+    Layout = null;
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/css/style.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<div class="form-wrapper">
+    <form class="form-group" action="@Url.Action("Registration","Account")" method="post" enctype="multipart/form-data">
+        <h2 style="text-align:center">Registration</h2>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", @placeholder = "სახელი" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+        @Html.TextBoxFor(model => model.Surname, new { @class = "form-control", @type = "text", @placeholder = "გვარი" })
+        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "text", @placeholder = "ელ.ფოსტა" })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+        @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @type = "password", @placeholder = "პაროლი" })
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+        @Html.TextBoxFor(model => model.RepeatPassword, new { @class = "form-control", @type = "password", @placeholder = "გაიმეორეთ პაროლი" })
+        @Html.ValidationMessageFor(model => model.RepeatPassword, "", new { @class = "text-danger" })
+
+        <div class="buttonWrapper">
+            <button class="btn btn-success" type="submit">რეგისტრაცია</button>
+        </div>
+        <p style="color: red;">@ViewBag.Message</p>
+        <p style="color: green;">@TempData["Success"]</p>
+    </form>
+</div>
+
+
+
+

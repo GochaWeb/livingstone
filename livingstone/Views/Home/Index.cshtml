@@ -1,0 +1,977 @@
+﻿@model livingstone.Models.User
+@{
+    ViewBag.Title = "Index";
+    ViewBag.i = "@";
+    Layout = null;
+    var user = (livingstone.Models.User)Session["user"];
+    int CountTweet = Model.Comments.Count() + Model.Retweets.Count();
+    int CountFollowing = Model.Followings.Count();
+    
+}
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+    <link href="/css//style.css" type="text/css" rel="stylesheet">
+    <link href="/Content/jquery.Jcrop.min.css" rel="stylesheet" />
+    <style>
+        #Phototest {
+            display: block !important;
+        }
+    </style>
+
+</head>
+<body>
+    <header class="mainHeader">
+        <nav class="headerNav">
+            <div class="leftBlock">
+
+                <a href="@Url.Action("Index","Home",new { id=user.Id})" class="navLinks">
+                    <img src="/img/home.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">home</span>
+                </a> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/nitifications.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">notifications</span>
+                </div> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/discover.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">discover</span>
+                </div> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/profile.png" alt="" class="navLinks-img">
+
+                    <span class="navLinks-text">@user.Name</span>
+
+
+
+
+                </div> <!--navLinks-->
+
+            </div> <!--leftBlock-->
+
+            <img src="/img/twitterLogo.png" alt="" class="twitterLogo">
+
+
+            <div class="rightBlock">
+
+                <div class="inputWrapper">
+                    <input type="text" placeholder="search" id="searchInput" class="searchInput">
+                    <img src="/img/searchIcon.png" alt="" class="searchIcon">
+
+                    <div class="mysuggestions">
+                       
+                    </div>
+                </div> <!--inputWrapper-->
+
+                <div class="iconWrapper">
+                    <img src="img/messageIcon.png" class="justIcons" alt="">
+                </div> <!--iconWrapper-->
+
+                <div class="iconWrapper" id="modalStatus">
+                    <img src="/img/settingsIcon.png" class="justIcons" alt="">
+                    <div class="settingsModalWindow hidden" id="hiddenModal">
+                        <a href="#" class="settingsModal-link">test text</a>
+                        <a href="#" class="settingsModal-link">test text</a>
+                    </div> <!--settingsModalWindow-->
+                </div> <!--iconWrapper-->
+
+                <div class="iconWrapper">
+                    <a href="@Url.Action("Logout","Home")"><img src="/img/newPost.png" class="justIcons" alt=""></a>
+                </div> <!--iconWrapper-->
+
+            </div> <!--rightBlock-->
+        </nav>
+    </header>
+
+    @if (ViewBag.Cover != null)
+    {
+        if (Model.Id == user.Id)
+        {
+            <div class="cover" style="background-image: url('/Content/Image/@ViewBag.Cover.Photo');">
+                <a href="@Url.Action("Upload","Home")" class="coverPhoto-p" id="openCoverModal">Upload or change cover photo<br><i class="fas fa-upload"></i></a>
+            </div> <!--cover-->
+        }
+        else
+        {
+            <div class="cover" style="background-image: url('/Content/Image/@ViewBag.Cover.Photo');">
+                @*<p class="coverPhoto-p" id="openCoverModal">Upload or change cover photo<br><i class="fas fa-upload"></i></p>*@
+            </div> <!--cover-->
+        }
+
+    }
+    else
+    {
+        if (Model.Id == user.Id)
+        {
+            <div class="cover">
+                <a href="@Url.Action("Upload","Home")" class="coverPhoto-p" id="openCoverModal">Upload or change cover photo<br><i class="fas fa-upload"></i></a>
+            </div> <!--cover-->
+        }
+        else
+        {
+            <div class="cover">
+                @*<p class="coverPhoto-p" id="openCoverModal">Upload or change cover photo<br><i class="fas fa-upload"></i></p>*@
+            </div> <!--cover-->
+        }
+
+    }
+
+
+ 
+
+    <div class="profileStatistics">
+        <div class="container">
+            @if (ViewBag.Photo != null)
+            {
+                if (Model.Id == user.Id)
+                {
+                    <div class="profilePhoto" style="background-image:url(/Content/Image/@ViewBag.Photo.Photo">
+
+                        <a href="@Url.Action("Upload","Home")" class="profilePhoto-p" id="openuploadModal">Upload or change profile photo</a>
+                    </div> <!--profilePhoto-->
+                }
+                else
+                {
+                    <div class="profilePhoto" style="background-image:url(/Content/Image/@ViewBag.Photo.Photo">
+
+                        @*<p class="profilePhoto-p" id="openuploadModal">Upload or change profile photo</p>*@
+                    </div> <!--profilePhoto-->
+
+                }
+
+            }
+            else
+            {
+                if (Model.Id == user.Id)
+                {
+                    <div class="profilePhoto">
+
+                        <a href="@Url.Action("Upload","Home")" class="profilePhoto-p" id="openuploadModal">Upload or change profile photo</a>
+                    </div> <!--profilePhoto-->
+                }
+                else
+                {
+                    <div class="profilePhoto">
+
+                        @*<p class="profilePhoto-p" id="openuploadModal">Upload or change profile photo</p>*@
+                    </div> <!--profilePhoto-->
+                }
+            }
+
+            <div class="statistics">
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">tweets</span> <!--statisticHeading-->
+                    <span class="statisticNumbers">@CountTweet</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">photos/videos</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">2</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">following</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">@CountFollowing</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">followers</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">@ViewBag.followers</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">favorites</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">0</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox flex">
+                    <div class="more">more<i class="fas fa-angle-down"></i></div>
+                </div> <!--statisticBox-->
+
+            </div> <!--statistics-->
+
+            <div class="settingsWrapper">
+                <img src="/img/settingsIcon.png" class="settingIcon" alt="">
+                @if (Model.Id != user.Id)
+                {
+                    if (ViewBag.Check != true)
+                    {
+                        <div class="followWrapper">
+                        <input type="hidden" value="@Model.Id" />
+                        <i class="fas fa-user-plus"></i>
+                        <span class="follow">follow</span>
+                       </div> <!--followWrapper-->
+
+                    }
+              
+
+                }
+            </div> <!--settingsWrapper-->
+
+
+        </div> <!--container-->
+    </div> <!--profileStatistics-->
+
+
+    <div class="contentContainer">
+
+        <div class="desc">
+            <div class="innerDesc">
+                <h2 class="desc-h2">
+                    @Model.Name @Model.Surname <i class="far fa-check-circle"></i>
+                </h2> <!--desc-h2-->
+                <span class="profileName">@ViewBag.i @Model.RegNumber</span>
+
+                <p class="desc-p">
+                    some text some text some text some text some text some text some text some text some text some text
+                </p>
+
+                <div class="profileInfoWrapper">
+                    <p class="profileInfo-p"><i class="fas fa-map-marker-alt"></i> City Road, London, UK</p>
+
+                    <a class="profileInfo-a" href="#"><i class="fas fa-link"></i> everyinteraction.com</a>
+
+                    <p class="profileInfo-p"><i class="far fa-clock"></i> joined september 2007</p>
+                </div> <!--profileIndoWrapper-->
+
+            </div> <!--innerDesc-->
+         @if (Model.Id == user.Id)
+         {
+            <div class="compose">
+                <!-- <input type="text" class="writeInput" id="" placeholder="Tweet to every interaction"> -->
+           
+                <textarea class="writeInput" id="writeInput"  placeholder="Tweet to every interaction"></textarea>
+          
+                
+            </div> <!--compose-->
+         }
+        </div> <!--desc-->
+
+        <div class="postsContainer">
+            <ul class="posts-ul">
+                <li><a href="#" class="posts-a">Tweets</a></li>
+                <li><a href="#" class="posts-a activeTweet">Tweets and replies</a></li>
+            </ul> <!--posts-ul-->
+
+
+
+
+            @* საკუთარი პოსტები *@
+
+            @foreach (var item in Model.Comments.OrderByDescending(x => x.CommentDate).Where(x => x.UserID == ViewBag.Id))
+            {
+                <div class="post">
+                    <header class="postHeader">
+
+                        <input type="hidden" value="A1:@item.CommentId" />
+                        <input type="hidden" id="name" value="@item.User.Name" />
+                        <input id="hiddenId" type="hidden" value="@item.CommentId" />
+                        <img src="~/Content/Image/@item.User.ProfilePhotoes.FirstOrDefault().Photo" class="profileSmallImg" />
+                        <span id="span" class="postSpan">@item.User.Name</span>
+                        <span class="postHush">@ViewBag.i @item.User.RegNumber</span>
+                        <i class="fas fa-circle"></i>
+                        <span class="postDate">@item.CommentDate</span>
+                    </header> <!--postHeader-->
+
+                    <main class="postMain">
+                        <p class="postMain-p">
+                            @item.CommentText
+                        </p> <!--postMain-p-->
+                    </main> <!--postMain-->
+
+                    @foreach (var replyitem in item.Replies.OrderByDescending(x=>x.ReplyDate))
+                    {
+                        <div class="reply">
+                            <header class="postHeader">
+
+                                <input type="hidden" value="B2:@replyitem.ReplyId" />
+                                <input type="hidden" id="name" value="@replyitem.User.Name" />
+                                <img src="/Content/Image/@replyitem.User.ProfilePhotoes.FirstOrDefault().Photo" class="replySmallImg" />
+                                <span class="postSpan">@replyitem.User.Name</span>
+                                <span class="postHush">@ViewBag.i @replyitem.User.RegNumber</span>
+                                <i class="fas fa-circle"></i>
+                                <span class="postDate">@replyitem.ReplyDate</span>
+                            </header> <!--postHeader-->
+
+                            <main class="raplyMain">
+                                <p class="postMain-p">
+                                    @replyitem.ReplyText
+                                </p> <!--postMain-p-->
+                            </main> <!--postMain-->
+
+                            <footer class="postFooter">
+                                <i style="cursor:pointer" class="fas fa-reply"></i>
+                            @if (replyitem.User.Id == user.Id)
+                            {
+                                <span style="margin-right:0;"><i class="fas fa-trash-alt" id="reply"></i></span>
+                            }
+                                
+                            </footer> <!--postFooter-->
+                        </div> <!--post-->
+
+                    }
+
+
+                    <footer class="postFooter">
+                        <i style="cursor:pointer" class="fas fa-reply"></i>
+                    
+                        <span><i id="retweetbutton" style="cursor:pointer" class="fas fa-retweet retweeted"></i>10</span>
+                        <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                        <span style="margin-left:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="Comment"></i></span>
+                        <i class="fas fa-ellipsis-h"></i>
+                    </footer> <!--postFooter-->
+                </div> <!--post-->
+
+                foreach (var item1 in item.Retweets.OrderByDescending(x=>x.RetweetDate) /*ViewBag.rettweet as ICollection<livingstone.Models.Retweet>*/)
+                {
+
+                    if (item1.CommentID == item.CommentId)
+                    {
+
+
+                        <div class="post">
+                            <div class="retweet">
+
+                                <input type="hidden" value="C3:@item1.RetweetId" />
+                                <input type="hidden" id="name" value="@item1.User.Name" />
+                                <input id="hiddenId" type="hidden" value="retweetid:@item1.RetweetId" />
+                                <span><i style="cursor:pointer" class="fas fa-retweet retweeted"></i></span>
+                                <p class="retweet-p">retweeted by @item1.User.Name</p>
+                            </div> <!--retweet-->
+
+                            <header class="postHeader">
+                                <img src="~/Content/Image/@item1.User.ProfilePhotoes.FirstOrDefault().Photo" class="profileSmallImg" />
+                                <span class="postSpan">@item1.User.Name</span>
+                                <span class="postHush">@ViewBag.i @item1.User.RegNumber</span>
+                                <i class="fas fa-circle"></i>
+                                <span class="postDate">@item1.RetweetDate</span>
+                            </header> <!--postHeader-->
+
+                            <main class="postMain">
+                                <p class="postMain-p">
+                                    @item1.RetweetText
+                                </p> <!--postMain-p-->
+                            </main> <!--postMain-->
+
+                            @foreach (var replyitem in item1.RetweetReplies.OrderByDescending(x=>x.ReplyDate))
+                            {
+                                <div class="reply">
+                                    <header class="postHeader">
+
+                                        <input type="hidden" value="D4:@replyitem.ReplyId" />
+                                        <input type="hidden" id="name" value="@replyitem.User.Name" />
+                                        <img src="/Content/Image/@replyitem.User.ProfilePhotoes.FirstOrDefault().Photo" class="replySmallImg" />
+                                        <span class="postSpan">@replyitem.User.Name</span>
+                                        <span class="postHush">@ViewBag.i @replyitem.User.RegNumber</span>
+                                        <i class="fas fa-circle"></i>
+                                        <span class="postDate">@replyitem.ReplyDate</span>
+                                    </header> <!--postHeader-->
+
+                                    <main class="raplyMain">
+                                        <p class="postMain-p">
+                                            @replyitem.ReplyText
+                                        </p> <!--postMain-p-->
+                                    </main> <!--postMain-->
+
+                                    <footer class="postFooter">
+                                        <i style="cursor:pointer" class="fas fa-reply"></i>
+                                    
+                                        <span style="margin-right:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="retweetreply"></i></span>
+                                    
+                                        
+                                    </footer> <!--postFooter-->
+                                </div> <!--post-->
+
+                            }
+
+                            <footer class="postFooter">
+                                <i style="cursor:pointer" class="fas fa-reply"></i>
+                                <span><i class="fas fa-retweet"></i>10</span>
+                                <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                              
+                                   <span style="margin-left:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="retweet"></i></span>
+                               
+                                   
+                               
+                                
+                                <i class="fas fa-ellipsis-h"></i>
+                            </footer> <!--postFooter-->
+                        </div> <!--post-->
+                    }
+
+                }
+
+            }
+
+
+
+
+
+
+
+
+            @* Followers პოსტები *@
+
+
+            @foreach (var item in Model.Followings.Where(x => x.UserID == user.Id))
+            {
+                foreach (var item1 in ViewBag.Comment as ICollection<livingstone.Models.Comment>)
+                {
+                    if (item1.UserID == item.FollowingID)
+                    {
+                        <div class="post">
+                            <header class="postHeader">
+                                <input type="hidden" id="name" value="@item1.User.Name" />
+                                <input id="hiddenId" type="hidden" value="@item1.CommentId" />
+                                <img src="~/Content/Image/@item1.User.ProfilePhotoes.FirstOrDefault().Photo" class="profileSmallImg" />
+                                <span class="postSpan">@item1.User.Name</span>
+                                <span class="postHush">@ViewBag.i @item1.User.RegNumber</span>
+                                <i class="fas fa-circle"></i>
+                                <span class="postDate">@item1.CommentDate</span>
+                            </header> <!--postHeader-->
+
+                            <main class="postMain">
+                                <p class="postMain-p">
+                                    @item1.CommentText
+                                </p> <!--postMain-p-->
+                            </main> <!--postMain-->
+
+                            @foreach (var reply in item1.Replies.OrderByDescending(x=>x.ReplyDate))
+                            {
+                                <div class="reply">
+                                    <header class="postHeader">
+
+                                        <input type="hidden" value="B2:@reply.ReplyId" />
+                                        <input type="hidden" id="name" value="@reply.User.Name" />
+                                        <img src="/Content/Image/@reply.User.ProfilePhotoes.FirstOrDefault().Photo" class="replySmallImg" />
+                                        <span class="postSpan">@reply.User.Name</span>
+                                        <span class="postHush">@ViewBag.i @reply.User.RegNumber</span>
+                                        <i class="fas fa-circle"></i>
+                                        <span class="postDate">@reply.ReplyDate</span>
+                                    </header> <!--postHeader-->
+
+                                    <main class="raplyMain">
+                                        <p class="postMain-p">
+                                            @reply.ReplyText
+                                        </p> <!--postMain-p-->
+                                    </main> <!--postMain-->
+
+                                    <footer class="postFooter">
+                                        <i style="cursor:pointer" class="fas fa-reply"></i>
+                                    @if (reply.User.Id == user.Id)
+                                    {
+                                         <span style="margin-right:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="reply"></i></span>
+                                    }
+                                       
+                                    </footer> <!--postFooter-->
+                                </div> <!--post-->
+
+                            }
+
+
+
+
+                            <footer class="postFooter">
+                                <i style="cursor:pointer" class="fas fa-reply"></i>
+                                <span><i id="retweetbutton" style="cursor:pointer" class="fas fa-retweet retweeted"></i>10</span>
+                                <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                            @if (item1.User.Id == user.Id)
+                            {
+                                <span style="margin-left:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="retweet"></i></span>
+                            }
+                              
+                                <i class="fas fa-ellipsis-h"></i>
+                            </footer> <!--postFooter-->
+                        </div> <!--post-->
+
+                        foreach (var item2 in ViewBag.rettweet as ICollection<livingstone.Models.Retweet>)
+                        {
+
+                            if (item2.CommentID == item1.CommentId)
+                            {
+
+
+                                <div class="post">
+                                    <div class="retweet">
+
+                                        <input type="hidden" value="C3:@item2.RetweetId" />
+                                        <input type="hidden" id="name" value="@item2.User.Name" />
+                                        <input id="hiddenId" type="hidden" value="retweetid:@item2.RetweetId" />
+
+                                        <span><i class="fas fa-retweet retweeted"></i></span>
+                                        <p class="retweet-p">retweeted by @item2.User.Name</p>
+                                    </div> <!--retweet-->
+
+                                    <header class="postHeader">
+                                        <img src="~/Content/Image/@item2.User.ProfilePhotoes.FirstOrDefault().Photo" class="profileSmallImg" />
+                                        <span class="postSpan">@item2.User.Name</span>
+                                        <span class="postHush">@ViewBag.i @item2.User.RegNumber</span>
+                                        <i class="fas fa-circle"></i>
+                                        <span class="postDate">@item2.RetweetDate</span>
+                                    </header> <!--postHeader-->
+
+                                    <main class="postMain">
+                                        <p class="postMain-p">
+                                            @item2.RetweetText
+                                        </p> <!--postMain-p-->
+                                    </main> <!--postMain-->
+                                    @foreach (var replyitem in item2.RetweetReplies.OrderByDescending(x=>x.ReplyDate))
+                                    {
+                                        <div class="reply">
+                                            <header class="postHeader">
+
+                                                <input type="hidden" value="D4:@replyitem.ReplyId" />
+                                                <input type="hidden" id="name" value="@replyitem.User.Name" />
+                                                <img src="/Content/Image/@replyitem.User.ProfilePhotoes.FirstOrDefault().Photo" class="replySmallImg" />
+                                                <span class="postSpan">@replyitem.User.Name</span>
+                                                <span class="postHush">@ViewBag.i @replyitem.User.RegNumber</span>
+                                                <i class="fas fa-circle"></i>
+                                                <span class="postDate">@replyitem.ReplyDate</span>
+                                            </header> <!--postHeader-->
+
+                                            <main class="raplyMain">
+                                                <p class="postMain-p">
+                                                    @replyitem.ReplyText
+                                                </p> <!--postMain-p-->
+                                            </main> <!--postMain-->
+
+                                            <footer class="postFooter">
+                                                <i style="cursor:pointer" class="fas fa-reply"></i>
+                                            @if (replyitem.User.Id == user.Id)
+                                            {
+                                                 <span style="margin-right:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="retweetreply"></i></span>
+                                            }
+                                               
+                                            </footer> <!--postFooter-->
+                                        </div> <!--post-->
+
+                                    }
+
+                                    <footer class="postFooter">
+                                        <i style="cursor:pointer" class="fas fa-reply"></i>
+                                        <span><i style="cursor:pointer" class="fas fa-retweet"></i>10</span>
+                                    @if (item2.UserID == user.Id)
+                                    {
+                                        <span style="margin-left:0;"><i style="cursor:pointer" class="fas fa-trash-alt" id="retweet"></i></span>
+                                    }
+                                        
+                                        <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </footer> <!--postFooter-->
+                                </div> <!--post-->
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+        </div> <!--postsContainer-->
+
+        <div class="suggestions">
+            <header class="suggestionsHeader">
+                <h3 class="suggestions-h3">Who to follow</h3>
+                <i class="fas fa-circle"></i>
+                <a href="#" class="suggestions-refresh">Refresh</a>
+                <i class="fas fa-circle"></i>
+                <a href="#" class="suggestions-viewAll">View all</a>
+            </header>
+
+        @foreach(var item in ViewBag.Users)
+        {
+            <div class="suggestionBox">
+
+                <div class="imgWrapper">
+                    <img src="~/Content/Image/@item.Photo" class="profileImg" alt="">
+                </div> <!--imgWrapper-->
+
+                <div class="contentWrapper">
+                    <header class="contentHeader">
+                        <a href="@Url.Action("Index","Home",new { id=item.Id})"  class="flex">
+                            <p class="content-p">@item.Name @item.Surname <i class="far fa-check-circle hide"></i></p>
+                            <span class="postHush">@ViewBag.i @item.RegNumber</span>
+                        </a>
+                        <i class="fas fa-times"></i>
+                    </header>
+
+                    <p class="followed">Followed by <a href="#">Darkejon</a> and <a href="#">others</a></p>
+
+                   
+                        <div class="followBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <input type="hidden" value="@item.Id" />
+                            <span class="follow">follow</span>
+                        </div>
+                   
+                </div> <!--contentWrapper-->
+
+            </div> <!--suggestionBox-->
+
+        }
+            
+
+          
+
+         
+
+            <footer class="suggestionFooter">
+                <a class="suggestionFooter-link" href="#">Popular accounts</a>
+                <i class="fas fa-circle"></i>
+                <a class="suggestionFooter-link" href="#">Find friends</a>
+            </footer>
+
+        </div> <!--suggestions-->
+        <div id="query">
+
+        </div>
+    </div> <!--contentContainer-->
+
+
+    <script src="/js/scripts.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.Jcrop.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('.mysuggestions').hide();
+            $('#searchInput').keyup(function () {
+
+                let query = $(this).val();
+
+                $.ajax({
+
+                    url: '/Home/GetUser',
+                    method: 'post',
+                    data: { 'query': query },
+
+                    success: function (response) {
+                        var body = "";
+
+                        if (response == false) {
+                            body = "";
+                            $('.mysuggestions').hide();
+                        }
+
+                        $.each(response, function (key, value) {
+                            $('.mysuggestions').show();
+                            body += ' <div class="innerSuggestions"><img src="/Content/Image/' + value.Photo + '" class="profileSmallImg" /> <a href="/Home/Index/' + value.Id + '" class="profileSerch-a">' + value.Name + ' ' + value.Surname + '</a></div>'
+
+                            console.log(value.Name + ' ' + value.Surname);
+
+
+                        });
+                        $('.mysuggestions').html(body);
+                    }
+                });
+            });
+
+        });
+
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.Phototest').Jcrop({
+
+                onSelect: updateCoords
+
+
+            });
+
+            function updateCoords(c) {
+
+                $('#X').val(c.x);
+                $('#Y').val(c.y);
+                $('#W').val(c.w);
+                $('#H').val(c.h);
+
+            }
+        });
+
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.followBtn').click(function () {
+                var id = $(this).children('input').val();
+                $(this).addClass('hidediv');
+                $.ajax({
+
+                    url: '@Url.Action("Following","Home")',
+                    method: 'post',
+                    data: { 'Id': id },
+                    success: function (response) {
+                        if (response == true)
+                            location.reload();
+                        else
+                            alert("ასეთი მომხამრებელი არ არსებობს");
+
+                    }
+                });
+
+            });
+
+            $('.followWrapper').click(function () {
+
+                var id = $(this).children('input').val();
+                 $.ajax({
+
+                    url: '@Url.Action("Following","Home")',
+                    method: 'post',
+                    data: { 'Id': id },
+                    success: function (response) {
+                        if (response == true)
+                            location.reload();
+                        else
+                            alert("ასეთი მომხამრებელი არ არსებობს");
+
+                    }
+                });
+                
+            });
+
+        });
+
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#writeInput').on("keydown", function (event) {
+                if (event.which == 13) {
+                    var value = $('#writeInput').val();
+                    $.ajax({
+
+                        method: 'post',
+                        url: "/Home/WriteComment",
+                        data: { 'Id': '@user.Id', 'text': value },
+                        success: function (response) {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+
+
+            $(document).delegate(".retweeted", "click", function (event){
+                var g = $(this).parents('.postFooter').attr('id', "newtweet");
+                var Id = g.parents('.post');
+
+
+
+                var value = Id.find('#hiddenId').val();
+                var name = Id.find('#name').val();
+                var body = '<input type="text" id="retweettext" placeholder="retweet text to ' + name+'"/>';
+                g.html(body);
+
+
+
+                $('#retweettext').on("keydown", function (event) {
+                    if (event.which == 13) {
+                        var text = $('#retweettext').val();
+                        $.ajax({
+
+                            method: 'post',
+                            url: '/Home/Retweet',
+                            data: { 'Id': value,'text':text},
+                            success: function (response) {
+                                location.reload();
+                            }
+                        });
+                    }
+
+
+                });
+
+            });
+
+        });
+
+
+
+
+
+
+
+
+    </script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.fa-reply').click(function () {
+
+                var g = $(this).parents('.postFooter').attr('id', "newtweet");
+                var Id = g.parents('.post');
+                var value = Id.find('#hiddenId').val();
+                var name = Id.find('#name').val();
+              
+                var body = '<input type="text" id="replytext" placeholder="reply text to '+name+'"/>';
+                g.html(body);
+
+               
+                
+                $('#replytext').on("keydown", function (event) {
+                    if (event.which == 13) {
+                        var text = $('#replytext').val();
+                        
+                        $.ajax({
+
+                            method: 'post',
+                            url: '/Home/AddReply',
+                            data: { 'Value': value, 'text': text },
+                            success: function (response) {
+                               
+
+                                location.reload();
+                            }
+                        });
+                    }
+
+
+                });
+             
+            });
+
+        });
+
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.fa-trash-alt').click(function () {
+                var x = confirm('Are u sure?');
+                if (x) {
+                    if ($(this).attr('id') == 'reply') {
+                        var x = $(this).parents('.reply');
+
+                        var value = x.find('input').val();
+
+                        $.ajax({
+
+                            url: '/Home/DelComment',
+                            method: 'post',
+                            data: { 'Value': value },
+                            success: function (response) {
+                                if (response == true)
+                                    location.reload();
+                                else
+                                    alert('faild');
+                            }
+                        });
+
+                    }
+                    else if ($(this).attr('id') == 'retweet') {
+                        var x = $(this).parents('.post')
+
+                        var value = x.find('input').val();
+
+                        $.ajax({
+
+                            url: '/Home/DelComment',
+                            method: 'post',
+                            data: { 'Value': value },
+                            success: function (response) {
+                                if (response == true)
+                                    location.reload();
+                                else
+                                    alert('faild');
+                            }
+                        });
+                    }
+                    else if ($(this).attr('id') == 'retweetreply') {
+                        var x = $(this).parents('.reply')
+
+                        var value = x.find('input').val();
+
+                        $.ajax({
+
+                            url: '/Home/DelComment',
+                            method: 'post',
+                            data: { 'Value': value },
+                            success: function (response) {
+                                if (response == true)
+                                    location.reload();
+                                else
+                                    alert('faild');
+                            }
+                        });
+                    }
+                    else if ($(this).attr('id') == 'Comment') {
+                        var x = $(this).parents('.post')
+
+                        var value = x.find('input').val();
+
+                        $.ajax({
+
+                            url: '/Home/DelComment',
+                            method: 'post',
+                            data: { 'Value': value },
+                            success: function (response) {
+                                if (response == true)
+                                    location.reload();
+                                else
+                                    alert('faild');
+                            }
+                        });
+                    } 
+                } else {
+                    return false;
+                }
+                
+
+                   
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+﻿@model livingstone.Models.User
+@{
+    ViewBag.Title = "Profile";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+    <link href="/css//style.css" type="text/css" rel="stylesheet">
+    <link href="~/Content/jquery.Jcrop.min.css" rel="stylesheet" />
+    <style>
+        #Phototest {
+            display: block !important;
+        }
+    </style>
+
+</head>
+<body>
+    <header class="mainHeader">
+        <nav class="headerNav">
+            <div class="leftBlock">
+
+                <div class="navLinks">
+                    <img src="/img/home.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">home</span>
+                </div> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/nitifications.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">notifications</span>
+                </div> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/discover.png" alt="" class="navLinks-img">
+                    <span class="navLinks-text">discover</span>
+                </div> <!--navLinks-->
+
+                <div class="navLinks">
+                    <img src="/img/profile.png" alt="" class="navLinks-img">
+                   
+                  <span class="navLinks-text">@Model.Name</span>                    
+             
+                </div> <!--navLinks-->
+
+            </div> <!--leftBlock-->
+
+            <img src="/img/twitterLogo.png" alt="" class="twitterLogo">
+
+
+            <div class="rightBlock">
+
+                <div class="inputWrapper">
+                    <input type="text" placeholder="search" id="searchInput" class="searchInput">
+                    <img src="/img/searchIcon.png" alt="" class="searchIcon">
+
+                </div> <!--inputWrapper-->
+
+                <div class="iconWrapper">
+                    <img src="img/messageIcon.png" class="justIcons" alt="">
+                </div> <!--iconWrapper-->
+
+                <div class="iconWrapper" id="modalStatus">
+                    <img src="/img/settingsIcon.png" class="justIcons" alt="">
+                    <div class="settingsModalWindow hidden" id="hiddenModal">
+                        <a href="#" class="settingsModal-link">test text</a>
+                        <a href="#" class="settingsModal-link">test text</a>
+                    </div> <!--settingsModalWindow-->
+                </div> <!--iconWrapper-->
+
+                <div class="iconWrapper">
+                    <img src="/img/newPost.png" class="justIcons" alt="">
+                </div> <!--iconWrapper-->
+
+            </div> <!--rightBlock-->
+        </nav>
+    </header>
+
+
+    <div class="cover" style="background-image: url('img/');">
+        <p class="coverPhoto-p" id="openCoverModal">Upload or change cover photo<br><i class="fas fa-upload"></i></p>
+    </div> <!--cover-->
+
+    <div class="hiddenCoverModal vishidden" id="coverModal">
+        upload cover photo
+        <i class="fas fa-times" id="closeCover"></i>
+    </div>  <!--hiddenPhotoModal-->
+
+    <div class="hiddenPhotoModal vishidden" id="PhotoModal">
+        upload profile photo
+        <i class="fas fa-times" id="closeModal"></i>
+
+        <input type="file" id="Photo" name="Photo" />
+        <button id="upload" class="btn btn-success">ატვირთე</button>
+
+
+
+
+
+
+
+    </div>  <!--hiddenPhotoModal-->
+
+    <div class="profileStatistics">
+        <div class="container">
+
+            <div class="profilePhoto" style="background-image:url(/Content/Image/@ViewBag.Photo.Photo">
+
+                <p class="profilePhoto-p" id="openuploadModal">Upload or change profile photo</p>
+            </div> <!--profilePhoto-->
+
+            <div class="statistics">
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">tweets</span> <!--statisticHeading-->
+                    <span class="statisticNumbers">34.7k</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">photos/videos</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">295</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">following</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">685</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">followers</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">889</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox">
+                    <span class="statisticHeading">favorites</span> <!--statisticHeading-->
+
+                    <span class="statisticNumbers">247</span> <!--statisticNumbers-->
+                </div> <!--statisticBox-->
+
+                <div class="statisticBox flex">
+                    <div class="more">more<i class="fas fa-angle-down"></i></div>
+                </div> <!--statisticBox-->
+
+            </div> <!--statistics-->
+
+            <div class="settingsWrapper">
+                <img src="/img/settingsIcon.png" class="settingIcon" alt="">
+                <div class="followWrapper">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="follow">follow</span>
+                </div> <!--followWrapper-->
+            </div> <!--settingsWrapper-->
+
+        </div> <!--container-->
+    </div> <!--profileStatistics-->
+
+
+    <div class="contentContainer">
+
+        <div class="desc">
+            <div class="innerDesc">
+                <h2 class="desc-h2">
+                    every interactions <i class="far fa-check-circle"></i>
+                </h2> <!--desc-h2-->
+                <span class="profileName">@ViewBag.i EveryInteract</span>
+
+                <p class="desc-p">
+                    some text some text some text some text some text some text some text some text some text some text
+                </p>
+
+                <div class="profileInfoWrapper">
+                    <p class="profileInfo-p"><i class="fas fa-map-marker-alt"></i> City Road, London, UK</p>
+
+                    <a class="profileInfo-a" href="#"><i class="fas fa-link"></i> everyinteraction.com</a>
+
+                    <p class="profileInfo-p"><i class="far fa-clock"></i> joined september 2007</p>
+                </div> <!--profileIndoWrapper-->
+
+            </div> <!--innerDesc-->
+
+            <div class="compose">
+                <!-- <input type="text" class="writeInput" id="" placeholder="Tweet to every interaction"> -->
+                <textarea class="writeInput" id="" placeholder="Tweet to every interaction"></textarea>
+            </div> <!--compose-->
+        </div> <!--desc-->
+
+        <div class="postsContainer">
+            <ul class="posts-ul">
+                <li><a href="#" class="posts-a">Tweets</a></li>
+                <li><a href="#" class="posts-a activeTweet">Tweets and replies</a></li>
+            </ul> <!--posts-ul-->
+
+            <div class="post">
+                <header class="postHeader">
+                    <i class="fas fa-user-circle small"></i>
+                    <span class="postSpan">every interaction</span>
+                    <span class="postHush">@ViewBag.i EveryInteract</span>
+                    <i class="fas fa-circle"></i>
+                    <span class="postDate">apr 17</span>
+                </header> <!--postHeader-->
+
+                <main class="postMain">
+                    <p class="postMain-p">
+                        Lorem Ipsum is simply <a href="#" class="postMain-link">http://www.dummy text.com</a>
+                        of <a href="#" class="postMain-hush">@ViewBag.i the printing</a> and typesetting industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p> <!--postMain-p-->
+                </main> <!--postMain-->
+
+                <footer class="postFooter">
+                    <i class="fas fa-reply"></i>
+                    <span><i class="fas fa-retweet"></i>10</span>
+                    <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                    <i class="fas fa-ellipsis-h"></i>
+                </footer> <!--postFooter-->
+            </div> <!--post-->
+
+            <div class="post">
+                <div class="retweet">
+                    <span><i class="fas fa-retweet retweeted"></i></span>
+                    <p class="retweet-p">retweeted by every interactions</p>
+                </div> <!--retweet-->
+
+                <header class="postHeader">
+                    <i class="fas fa-user-circle small"></i>
+                    <span class="postSpan">every interaction</span>
+                    <span class="postHush">@ViewBag.i EveryInteract</span>
+                    <i class="fas fa-circle"></i>
+                    <span class="postDate">apr 17</span>
+                </header> <!--postHeader-->
+
+                <main class="postMain">
+                    <p class="postMain-p">
+                        Lorem Ipsum is simply <a href="#" class="postMain-link">http://www.dummy text.com</a>
+                        of <a href="#" class="postMain-hush">@ViewBag.i the printing</a> and typesetting industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                    </p> <!--postMain-p-->
+                </main> <!--postMain-->
+
+                <footer class="postFooter">
+                    <i class="fas fa-reply"></i>
+                    <span><i class="fas fa-retweet"></i>10</span>
+                    <span style="margin-left: 0;"><i class="fas fa-star"></i>20</span>
+                    <i class="fas fa-ellipsis-h"></i>
+                </footer> <!--postFooter-->
+            </div> <!--post-->
+
+        </div> <!--postsContainer-->
+
+        <div class="suggestions">
+            <header class="suggestionsHeader">
+                <h3 class="suggestions-h3">Who to follow</h3>
+                <i class="fas fa-circle"></i>
+                <a href="#" class="suggestions-refresh">Refresh</a>
+                <i class="fas fa-circle"></i>
+                <a href="#" class="suggestions-viewAll">View all</a>
+            </header>
+
+            <div class="suggestionBox">
+
+                <div class="imgWrapper">
+                    <img src="" class="profileImg" alt="">
+                </div> <!--imgWrapper-->
+
+                <div class="contentWrapper">
+                    <header class="contentHeader">
+                        <span class="flex">
+                            <p class="content-p">AppleInsider <i class="far fa-check-circle hide"></i></p>
+                            <span class="postHush">@ViewBag.i appleInsider</span>
+                        </span>
+                        <i class="fas fa-times"></i>
+                    </header>
+
+                    <p class="followed">Followed by <a href="#">Darkejon</a> and <a href="#">others</a></p>
+
+                    <div class="followBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="follow">follow</span>
+                    </div> <!--followWrapper-->
+                </div> <!--contentWrapper-->
+
+            </div> <!--suggestionBox-->
+
+            <div class="suggestionBox">
+
+                <div class="imgWrapper">
+                    <img src="" class="profileImg" alt="">
+                </div> <!--imgWrapper-->
+
+                <div class="contentWrapper">
+                    <header class="contentHeader">
+                        <span class="flex">
+                            <p class="content-p">AppleInsider <i class="far fa-check-circle"></i></p>
+                            <span class="postHush">@ViewBag.i appleInsider</span>
+                        </span>
+                        <i class="fas fa-times"></i>
+                    </header>
+
+                    <p class="followed hide">Followed by <a href="#">Darkejon</a> and <a href="#">others</a></p>
+
+                    <div class="followBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="follow">follow</span>
+                    </div> <!--followWrapper-->
+                </div> <!--contentWrapper-->
+
+            </div> <!--suggestionBox-->
+
+            <div class="suggestionBox">
+
+                <div class="imgWrapper">
+                    <img src="" class="profileImg" alt="">
+                </div> <!--imgWrapper-->
+
+                <div class="contentWrapper">
+                    <header class="contentHeader">
+                        <span class="flex">
+                            <p class="content-p">AppleInsider <i class="far fa-check-circle hide"></i></p>
+                            <span class="postHush">@ViewBag.i appleInsider</span>
+                        </span>
+                        <i class="fas fa-times"></i>
+                    </header>
+
+                    <p class="followed hide">Followed by <a href="#">Darkejon</a> and <a href="#">others</a></p>
+
+                    <div class="followBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="follow">follow</span>
+                    </div> <!--followWrapper-->
+                </div> <!--contentWrapper-->
+
+            </div> <!--suggestionBox-->
+
+            <footer class="suggestionFooter">
+                <a class="suggestionFooter-link" href="#">Popular accounts</a>
+                <i class="fas fa-circle"></i>
+                <a class="suggestionFooter-link" href="#">Find friends</a>
+            </footer>
+
+        </div> <!--suggestions-->
+        <div id="query">
+
+        </div>
+    </div> <!--contentContainer-->
+
+
+    <script src="/js/scripts.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.Jcrop.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#searchInput').keyup(function () {
+
+                let query = $(this).val();
+
+                $.ajax({
+
+                    url: '/Home/GetUser',
+                    method: 'post',
+                    data: { 'query': query },
+
+                    success: function (response) {
+                        var body = "";
+
+                        if (response == false) {
+                            body = "";
+                        }
+
+                        $.each(response, function (key, value) {
+
+                            body += '<a href="/Home/Index/'+value.Name+'">' + value.Name + ' '+value.Surname + '</a> <br />'
+
+                            console.log(value.Name + ' ' + value.Surname);
+
+
+                        });
+                        $('#query').html(body);
+                    }
+                });
+            });
+
+        });
+
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#upload').click(function () {
+
+                var formdata = new FormData();
+                var file = document.getElementById("Photo").files[0];
+                alert(file);
+                formdata.append('Photo', file);
+                alert(formdata);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/Upload',
+                    data: formdata,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        var body = "";
+                        if (response == false) {
+                            body = '<p>ფოტო უნდა იყოს მქსიმუმ 1 mb</p>';
+                            alert('ფოტო უნდა იყოს მქსიმუმ 1 mb')
+                        }
+                        else if (response == 1) {
+                            body = '<p>.jpg , .jpeg , .png მხოლოდ ამ გაფართოებით</p>';
+                            alert('.jpg , .jpeg , .png მხოლოდ ამ გაფართოებით');
+                        }
+                        else {
+                            var src = '/Content/Image/' + response + '.png';
+
+                            $('#Phototest').css({ 'height': '400px', 'width': '400px' });
+                            $('.Phototest').attr('src', src);
+                            //body = '<img src="' + src + '"/ class="Phototest">';
+                            //$('#UploadedImage').html(body);
+
+
+                        }
+
+
+                    }
+                });
+
+
+
+
+            });
+
+
+        });
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.Phototest').Jcrop({
+
+                onSelect: updateCoords
+
+
+            });
+
+            function updateCoords(c) {
+
+                $('#X').val(c.x);
+                $('#Y').val(c.y);
+                $('#W').val(c.w);
+                $('#H').val(c.h);
+
+            }
+        });
+
+
+    </script>
+
+
+</body>
+</html>
+

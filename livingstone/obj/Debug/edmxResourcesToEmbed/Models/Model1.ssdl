@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="livingstone.Models.LivingstoneContextModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Comments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CommentText" Type="nvarchar(max)" />
+    <Property Name="CommentDateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CoverPhotoes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Photo" Type="varchar" MaxLength="36" />
+  </EntityType>
+  <EntityType Name="ProfilePhotoes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Photo" Type="varchar" MaxLength="36" />
+  </EntityType>
+  <EntityType Name="Replies">
+    <Key>
+      <PropertyRef Name="ReplyId" />
+    </Key>
+    <Property Name="ReplyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CommentID" Type="int" Nullable="false" />
+    <Property Name="ReplyText" Type="nvarchar(max)" />
+    <Property Name="ReplyDateTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="150" />
+    <Property Name="Surname" Type="nvarchar" MaxLength="200" />
+    <Property Name="Email" Type="nvarchar" MaxLength="500" />
+    <Property Name="Password" Type="varchar" MaxLength="32" />
+    <Property Name="Confirmation" Type="varchar" MaxLength="32" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="RegNumber" Type="int" Nullable="false" />
+    <Property Name="Search" Type="nvarchar" MaxLength="360" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Comments_dbo_Users_UserID">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_CoverPhotoes_dbo_Users_UserID">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CoverPhotoes" Type="Self.CoverPhotoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CoverPhotoes">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_ProfilePhotoes_dbo_Users_UserID">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ProfilePhotoes" Type="Self.ProfilePhotoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProfilePhotoes">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Replies_dbo_Comments_CommentID">
+    <End Role="Comments" Type="Self.Comments" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Replies">
+        <PropertyRef Name="CommentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Replies_dbo_Users_UserID">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Replies" Type="Self.Replies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Replies">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="livingstoneModelsLivingstoneContextModelStoreContainer">
+    <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CoverPhotoes" EntityType="Self.CoverPhotoes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProfilePhotoes" EntityType="Self.ProfilePhotoes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Replies" EntityType="Self.Replies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dbo_Comments_dbo_Users_UserID" Association="Self.FK_dbo_Comments_dbo_Users_UserID">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_CoverPhotoes_dbo_Users_UserID" Association="Self.FK_dbo_CoverPhotoes_dbo_Users_UserID">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CoverPhotoes" EntitySet="CoverPhotoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_ProfilePhotoes_dbo_Users_UserID" Association="Self.FK_dbo_ProfilePhotoes_dbo_Users_UserID">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="ProfilePhotoes" EntitySet="ProfilePhotoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Replies_dbo_Comments_CommentID" Association="Self.FK_dbo_Replies_dbo_Comments_CommentID">
+      <End Role="Comments" EntitySet="Comments" />
+      <End Role="Replies" EntitySet="Replies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Replies_dbo_Users_UserID" Association="Self.FK_dbo_Replies_dbo_Users_UserID">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Replies" EntitySet="Replies" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
