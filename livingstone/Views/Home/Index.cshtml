@@ -293,9 +293,14 @@
                             @item.CommentText
                         </p> <!--postMain-p-->
                     </main> <!--postMain-->
-
+                    @if(item.Replies.Count() > 0)
+                    {
+                        <span style="cursor:pointer" class="control-label">Collapse</span>
+                    }
+                    
                     @foreach (var replyitem in item.Replies.OrderByDescending(x=>x.ReplyDate))
                     {
+                    
                         <div class="reply">
                             <header class="postHeader">
 
@@ -336,7 +341,7 @@
                         <i class="fas fa-ellipsis-h"></i>
                     </footer> <!--postFooter-->
                 </div> <!--post-->
-
+                
                 foreach (var item1 in item.Retweets.OrderByDescending(x=>x.RetweetDate) /*ViewBag.rettweet as ICollection<livingstone.Models.Retweet>*/)
                 {
 
@@ -367,7 +372,10 @@
                                     @item1.RetweetText
                                 </p> <!--postMain-p-->
                             </main> <!--postMain-->
-
+                              @if(item1.RetweetReplies.Count() > 0)
+                               {
+                                 <span style="cursor:pointer" class="control-label">Collapse</span>
+                               }
                             @foreach (var replyitem in item1.RetweetReplies.OrderByDescending(x=>x.ReplyDate))
                             {
                                 <div class="reply">
@@ -450,7 +458,11 @@
                                     @item1.CommentText
                                 </p> <!--postMain-p-->
                             </main> <!--postMain-->
-
+                           @if (item1.Replies.Count() > 0)
+                           {
+                                <span style="cursor:pointer" class="control-label">Collapse</span>
+                           }
+                           
                             @foreach (var reply in item1.Replies.OrderByDescending(x=>x.ReplyDate))
                             {
                                 <div class="reply">
@@ -530,6 +542,10 @@
                                             @item2.RetweetText
                                         </p> <!--postMain-p-->
                                     </main> <!--postMain-->
+                                     @if (item2.RetweetReplies.Count() > 0)
+                                      {
+                                        <span style="cursor:pointer" class="control-label">Collapse</span>
+                                      }
                                     @foreach (var replyitem in item2.RetweetReplies.OrderByDescending(x=>x.ReplyDate))
                                     {
                                         <div class="reply">
@@ -972,6 +988,24 @@
 
     </script>
 
+    <script>
+
+        $('.control-label').click(function () {
+
+            var x = $(this).nextAll('.reply')
+
+            if (x.is(":hidden")) {
+                x.show();
+                $(this).text('Collapse'); 
+            } else {
+                x.hide();
+                $(this).text('Expand');
+            }
+
+        });
+
+
+    </script>
 
 </body>
 </html>
