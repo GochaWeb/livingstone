@@ -436,7 +436,7 @@
             @* Followers პოსტები *@
 
 
-            @foreach (var item in Model.Followings.Where(x => x.UserID == user.Id))
+            @foreach (var item in Model.Followings.Where(x => x.UserID == Model.Id))
             {
                 foreach (var item1 in ViewBag.Comment as ICollection<livingstone.Models.Comment>)
                 {
